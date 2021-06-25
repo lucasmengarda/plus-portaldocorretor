@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;508;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jaldi:wght@400;700&display=swap');
 .container {
   min-height: 100vh;
   padding: 0 0.5rem;
@@ -7,8 +11,43 @@
   align-items: center;
 }
 
+.supersizer {
+  background-image: url("/fundo.jpeg");
+  background-position: cover;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+  opacity: 0.07;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  top: 0;
+}
+
+.supersizersegundatela {
+  background-image: url("/fundo2.jpg");
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+  opacity: 0.1;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  top: 0;
+}
+
+.logoplus{
+  width: 12%;
+  margin-top: -35px;
+}
+
 .main {
-  padding: 5rem 0;
+  padding: 4rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -17,16 +56,22 @@
 }
 
 .footer {
-  width: 100%;
-  height: 100px;
-  border-top: 1px solid #eaeaea;
+  margin-top: -20px;
+  width: 80%;
+  height: 160px;
+  border-top: 1px solid #204F69;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.footer img {
-  margin-left: 0.5rem;
+.divider {
+  margin-top: 20px;
+  width: 85%;
+  border-top: 1px solid #204F69;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .footer a {
@@ -40,26 +85,60 @@
   text-decoration: none;
 }
 
-.title a:hover,
-.title a:focus,
-.title a:active {
+.title a:hover, .title a:focus, .title a:active {
   text-decoration: underline;
 }
 
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 4rem;
+  font-size: 2rem;
 }
 
-.title,
-.description {
+.title, .description {
   text-align: center;
 }
 
 .description {
+  font-family: 'Quicksand', sans-serif;
   line-height: 1.5;
-  font-size: 1.5rem;
+  font-weight: 508;
+}
+
+.description2 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 508;
+  font-size: 13px;
+  text-align: center;
+  padding-top: 20px;
+  margin-bottom: -20px;
+}
+
+.description3 {
+  font-family: 'Quicksand', sans-serif;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.carregando_holder {
+  margin-top: 20px;
+}
+
+.carregando {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  margin-top: -5px;
+  text-align: center;
+}
+
+.carregando_erro {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  color: red;
+  font-size: 16px;
+  margin-top: 15px;
+  text-align: center;
 }
 
 .code {
@@ -67,17 +146,864 @@
   border-radius: 5px;
   padding: 0.75rem;
   font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-.grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.login_holder {
+  display: block;
   flex-wrap: wrap;
   max-width: 800px;
-  margin-top: 3rem;
+  margin-top: 10px;
+  background-color: #f2f2f2;
+  padding: 50px;
+  border-radius: 10px;
+}
+
+.login_subholder {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.login_subholder input {
+  font-family: Ubuntu;
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.2;
+  display: block;
+  position: relative;
+  width: 70%;
+  height: 45px;
+  background: transparent;
+  padding: 0 5px;
+  border: 0.5px solid #204F69;
+  border-radius: 15px;
+}
+
+.login_subholder input:focus {
+  border: hidden;
+}
+
+.login_subholder input::placeholder {
+  color: #cccccc;
+}
+
+.login_subholder button {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 20px;
+  margin: auto;
+  margin-top: 20px;
+  width: 30%;
+  display: block;
+  height: 42px;
+  background: #204F69;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.valordevenda {
+  font-family: 'Staatliches', sans-serif;
+  font-size: 85px;
+  text-align: center;
+  margin-top: -10px;
+  color: #204F69;
+}
+
+.valordevendaporm2 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  text-align: center;
+  margin-top: -105px;
+  color: #999;
+}
+
+.valordevendaaviso {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  margin-top: -20px;
+  color: #000;
+}
+
+.valordevendaavisoincc {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  text-align: left;
+  margin-top: 5px;
+  color: #000;
+}
+
+.valordevendaavisoincc b {
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.simulefluxo {
+  width: 100%;
+}
+
+.simulefluxo tr {
+  vertical-align: top;
+}
+
+.simulefluxo td {
+  width: 50%;
+}
+
+.simulefluxo td:not(:first-of-type) {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.simulefluxo resultado {
+  font-family: 'Staatliches', sans-serif;
+  font-size: 18pt;
+  margin-top: -0px;
+  margin-bottom: 12px;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.simulefluxo numeroparcelas {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 14pt;
+  margin-top: -0px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.simulefluxo valorparcela {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 20pt;
+  margin-left: 10px;
+  margin-top: -0px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.simulefluxo mesesamortizacao {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 13pt;
+  margin-left: 10px;
+  margin-top: -0px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.simulefluxo saldochavestxt {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 11pt;
+  margin-top: -0px;
+  font-weight: 400;
+}
+
+.simulefluxo saldochaves {
+  font-family: 'Jaldi', sans-serif;
+  font-size: 20pt;
+  margin-top: -0px;
+  margin-left: 10px;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.simulefluxo baloes {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12pt;
+  margin-left: 10px;
+  margin-top: -0px;
+  margin-bottom: 12px;
+}
+.simulefluxo valorbalao {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12pt;
+  margin-left: 5px;
+  margin-top: -0px;
+  margin-bottom: 12px;
+  font-weight: 400;
+  line-height: 2.0;
+}
+
+.simulefluxo h5 {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 14pt;
+  margin-top: -0px;
+  margin-bottom: 12px;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.itemfluxogroup span {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  margin-bottom: 0px;
+  color: #000;
+}
+
+.formfield {
+  --input-color: #000;
+  --input-border: #476496;
+  --input-background: #fff;
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  line-height: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 6px;
+  -webkit-appearance: none;
+  color: var(--input-color);
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  transition: border .3s ease;
+}
+
+.formfield::placeholder {
+  --input-placeholder: #CBD1DC;
+  color: var(--input-placeholder);
+}
+
+.formfield:focus {
+  outline: none;
+  --input-border-focus: #ffffff;
+  border-color: var(--input-border-focus);
+}
+
+.itemfluxogroup {
+  --input-border: #476496;
+  --group-color: var(--input-color);
+  --group-border: var(--input-border);
+  --group-background: oldlace;
+  position: relative;
+  display: flex;
+  width: 100%;
+
+  border-radius: 6px 6px 6px 6px;
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 25px;
+  color: var(--group-color);
+  background: var(--group-background);
+  border: 1px solid var(--group-border);
+  transition: background .3s ease, border .3s ease, color .3s ease;
+}
+
+.itemfluxogroup:not(:first-of-type){
+  margin-top: 4px;
+}
+
+.itemfluxogroup:focus-within {
+  --group-color-focus: #fff;
+  --group-border-focus: var(--input-border-focus);
+  --group-background-focus: #237A57;
+
+  color: var(--group-color-focus);
+  background: var(--group-background-focus);
+  border-color: var(--group-border-focus);
+}
+
+.itemfluxogroup:focus-within span {
+  color: #fff;
+}
+
+.tabelainvestidorholder {
+  display: block;
+  margin: 0px auto;
+  padding-top: 10px;
+  width: 80%;
+}
+
+.tabelainvestidorholder h5 {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12pt;
+  margin-top: -0px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.tabelainvestidor {
+  text-align: center;
+  width: 100%;
+}
+
+.tabelainvestidor td {
+  border-radius: 5px;
+  font-family: 'Jaldi', sans-serif;
+  font-size: 14pt;
+  font-weight: 400;
+  width: 20%;
+  vertical-align: middle;
+  height: 35px;
+}
+
+.tabelainvestidor th {
+  border-radius: 5px;
+  width: 20%;
+  height: 40px;
+  vertical-align: middle;
+}
+
+.tabelainvestidornaosomar {
+  border: 1pt solid #000;
+}
+
+.tabelainvestidorsomar {
+  border: 2pt solid rgb(28, 26, 160);
+}
+
+.tabelainvestidortitulo {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 10pt;
+  height: 22px;
+  vertical-align: center;
+  margin: auto;
+}
+
+.botoesmenu {
+  display: inline-block;
+}
+
+.botoesmenu button {
+  font-family: 'Staatliches', sans-serif;
+  font-size: 19px;
+  width: auto;
+  padding-right: 18px;
+  padding-left: 18px;
+  margin: auto;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: inline;
+  height: 44px;
+  background: #237A57;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.botoesmenu button:hover {
+  opacity: 0.6;
+  background-color: #204F69;
+  color: white;
+}
+
+.botaofazerproposta button {
+  font-family: 'Staatliches', sans-serif;
+  font-size: 32px;
+  width: 65%;
+  padding-right: 18px;
+  padding-left: 18px;
+  margin: 20px auto;
+  display: block;
+  height: 75px;
+  background: #237A57;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botaofazerproposta button:hover {
+  opacity: 0.6;
+  background-color: #204F69;
+  color: white;
+}
+
+.simulefluxo button {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  width: 100%;
+  padding-right: 18px;
+  padding-left: 18px;
+  margin-top: 10px;
+  display: block;
+  height: 45px;
+  background: #237A57;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.simulefluxo button:hover {
+  opacity: 0.6;
+  background-color: #204F69;
+  color: white;
+}
+
+.seletortabelaespelho p{
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 508;
+  font-size: 13px;
+  text-align: center;
+}
+
+.seletortabelaespelho {
+  margin: 0px auto;
+  width: 210px;
+}
+
+.seletortabelaespelho button{
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  display: inline;
+  font-size: 14px;
+  width: 100px;
+  position: relative;
+  margin: 0px auto;
+  height: 35px;
+  background: #2f3b60;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.seletortabelaespelho button:first-of-type{
+  margin-right: 10px;
+}
+
+.seletortabelaespelho button:hover {
+  opacity: 0.6;
+  background-color: #204F69;
+  color: white;
+}
+
+.textopaginas h1 {
+  font-family: 'Staatliches', sans-serif;
+  font-size: 30px;
+  text-align: center;
+  color: #000;
+}
+
+.textopaginas h2 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 508;
+  font-size: 13px;
+  text-align: center;
+  margin-top: -25px;
+}
+
+.textopaginas h3 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 508;
+  font-size: 15px;
+  display: block;
+  width: 60%;
+  padding-top: 10px;
+  margin: 0px auto;
+  position: relative;
+  text-align: center;
+}
+
+.textopaginas p {
+  font-family: 'Jaldi', sans-serif;
+  font-weight: 400;
+  font-size: 13pt;
+  text-align: left;
+  color: #000;
+}
+
+.textopaginasdemais p {
+  font-family: 'Jaldi', sans-serif;
+  font-weight: 400;
+  font-size: 11pt;
+  text-align: left;
+  color: #000;
+}
+
+.plantaandar {
+  display: block;
+  margin: 0px auto;
+  height: 15.5em;
+  transition: 0.3s
+}
+
+.plantaandar:hover{
+  height: 18em;
+}
+
+.bussolaandar {
+  display: block;
+  margin: 0px auto;
+  height: 11em;
+}
+
+.tabelacaracteristicasaptosecundaria {
+  margin-top: -16px;
+}
+
+.tabelacaracteristicasaptosecundaria table {
+  border: 1pt solid black;
+  width: 100%;
+  vertical-align: top;
+}
+
+.tabelacaracteristicasaptosecundaria img {
+  height: 25px;
+  width: 25px;
+  margin-top: 2px;
+  float: left;
+}
+
+.tabelacaracteristicasaptosecundaria div {
+  float: left;
+  margin-left: 10px;
+  margin-top: -2px;
+}
+
+.tabelacaracteristicasaptosecundaria td {
+  line-height: 2px;
+}
+
+.tabelaplantaapto {
+  width: 100%;
+}
+
+.tabelaplantaapto tr {
+  vertical-align: top;
+}
+
+.tabelaplantaapto td {
+  width: 50%;
+}
+
+.tabelaplantaapto td img {
+  margin: 0px auto;
+  display: block;
+}
+
+.tabelacaracteristicasapto {
+  width: 100%;
+  margin-top: -20px;
+}
+
+.tabeladeareas {
+  border-radius: 5px;
+  border: 1pt solid #000;
+  text-align: center;
+}
+
+.tabeladeareas td {
+  border: 1pt solid #000;
+  width: 33.333%;
+  vertical-align: middle;
+  height: 35px;
+}
+
+.tabeladeareas th {
+  border: 1pt solid #000;
+  width: 33.333%;
+  height: 40px;
+  vertical-align: middle;
+}
+
+.tabeladeareasareatotal {
+  font-family: 'Jaldi', sans-serif;
+  font-weight: 700;
+  font-size: 18pt;
+}
+
+.tabeladeareastitulo {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 10pt;
+  height: 22px;
+  vertical-align: center;
+  margin: auto;
+}
+
+.tabelacaracteristicasapto tr h1 {
+  text-align: center;
+  font-family: 'Staatliches', sans-serif;
+  font-weight: 400;
+  font-size: 30pt;
+  line-height: 22px;
+}
+
+.tabelacaracteristicasapto tr h2 {
+  text-align: center;
+  font-family: 'Jaldi', sans-serif;
+  font-weight: 400;
+  font-size: 20pt;
+  line-height: 22px;
+  margin-top: -25px;
+}
+
+.plantaapto {
+  height: 25em;
+}
+
+.tabeladevendas{
+  margin: 25px auto;
+  width: 100%;
+
+}
+
+.tabeladevendas table {
+  margin: 0px auto;
+  width: 100%;
+  table-layout: auto;
+  border-spacing:0px 0px; /* Removes the cell spacing via CSS*/;
+}
+
+.tabeladevendas tr{
+  padding-left: 10px;
+  transition: 0.3s;
+  color: black;
+}
+
+.tabeladevendasreservado {
+  background-color: khaki;
+}
+
+.tabeladevendasvendido {
+  background-color: tomato;
+}
+
+.tabeladevendasnulo {
+  background-color: oldlace;
+}
+
+.tabeladevendas tr:not(:first-of-type):hover{
+  background-color: #DBDBDB;
+  color: black;
+}
+
+.tabeladevendas td {
+  font-family: 'Source Sans Pro', sans-serif;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tabeladevendas td b {
+  font-weight: 600;
+}
+
+.tabeladevendas td bu {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.tabeladevendas th{
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 10pt;
+  background-color: #4A569D;
+  color: white;
+}
+
+.tabeladevendas th:first-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 0px;
+}
+
+.tabeladevendas th:last-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 00px;
+}
+
+.tabeladevendas th:first-child{
+  border-top-width: 1pt;
+  border-bottom-width: 1pt;
+  border-left-width: 1pt;
+  border-right-width: 1pt;
+  border-color: #273c75;
+  border-style: solid;
+}
+
+.tabeladevendas th:last-child{
+  border-top-width: 1pt;
+  border-bottom-width: 1pt;
+  border-left-width: 0pt;
+  border-right-width: 1pt;
+  border-color: #273c75;
+  border-style: solid;
+}
+
+.tabeladevendas th{
+  border-top-width: 1pt;
+  border-bottom-width: 1pt;
+  border-left-width: 0pt;
+  border-right-width: 1pt;
+  border-color: #273c75;
+  border-style: solid;
+  line-height: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  
+}
+
+.tabeladevendas td:first-child{
+  border-top-width: 0pt;
+  border-bottom-width: 0pt;
+  border-left-width: 0pt;
+  border-right-width: 1pt;
+  border-color: #192a56;
+  border-style: solid;
+}
+
+.tabeladevendas td:last-child{
+  border-top-width: 0pt;
+  border-bottom-width: 0pt;
+  border-left-width: 0pt;
+  border-right-width: 0pt;
+  border-color: #192a56;
+  border-style: solid;
+}
+
+.tabeladevendas td{
+  border-top-width: 0pt;
+  border-bottom-width: 0pt;
+  border-left-width: 0pt;
+  border-right-width: 1pt;
+  border-color: #192a56;
+  border-style: solid;
+  line-height: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  
+}
+
+.tabeladevendas td:nth-child(01),.tabeladevendas th:nth-child(01){
+  width: 60px;
+}
+
+.tabeladevendas td:nth-child(02),.tabeladevendas th:nth-child(02){
+  width: 60px;
+}
+
+.tabeladevendas td:nth-child(3),.tabeladevendas th:nth-child(3){
+  width: 16%;
+  min-width: 90px;
+  max-width: 200px;
+}
+
+.tabeladevendas td:nth-child(4),.tabeladevendas th:nth-child(4){
+  width: 60px;
+}
+
+.tabeladevendas td:nth-child(5),.tabeladevendas th:nth-child(5){
+  width: 90px;
+}
+
+.tabeladevendas td:nth-child(6),.tabeladevendas th:nth-child(6){
+  width: 90px;
+}
+
+.tabeladevendas td:nth-child(7),.tabeladevendas th:nth-child(7){
+  width: 90px;
+}
+
+.tabeladevendas td:nth-child(8),.tabeladevendas th:nth-child(8){
+  width: 90px;
+}
+
+.tabeladevendas td:nth-child(9),.tabeladevendas th:nth-child(9){
+  width: 100px;
+}
+
+.tabeladevendas td:nth-child(10),.tabeladevendas th:nth-child(10){
+  width: 120px;
+}
+
+.tabeladevendas td:nth-child(11),.tabeladevendas th:nth-child(11){
+  min-width: 50px;
+}
+
+.espelhodevendas {
+  margin-top: 25px;
+}
+
+.espelhodevendas table {
+  margin: 0px auto;
+}
+
+.espelhodevendas td {
+  font-family: 'Source Sans Pro', sans-serif;
+  line-height: 22px;
+  cursor: pointer;
+  /*
+  Da a transição para algum efeito de hover
+  */
+  transition: 0.3s;
+}
+
+.legendaespelho {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  margin-left: 20px;
+  font-size: 12pt;
+  text-align: left;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.espelhodevendasreservado {
+  background-color: khaki;
+  font-weight: 600;
+  width: 44px;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 13pt;
+  text-align: center;
+}
+
+.espelhodevendasvendido {
+  background-color: tomato;
+  font-weight: 600;
+  width: 44px;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 13pt;
+  text-align: center;
+}
+
+.espelhodevendasnulo {
+  background-color: oldlace;
+  font-weight: 600;
+  width: 44px;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 13pt;
+  text-align: center;
+}
+
+.espelhodevendasnulo:hover {
+  opacity: 0.6;
+  background-color: #204F69;
+  color: white;
+}
+
+.inputusuario {
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.inputsenha {
+  margin: auto;
 }
 
 .card {
@@ -92,9 +1018,7 @@
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
+.card:hover, .card:focus, .card:active {
   color: #0070f3;
   border-color: #0070f3;
 }
@@ -111,7 +1035,13 @@
 }
 
 .logo {
-  height: 1em;
+  display: block;
+  margin-top: -30px;
+  height: 3.5em;
+}
+
+.logo:first-of-type {
+  margin-right: 70px;
 }
 
 @media (max-width: 600px) {

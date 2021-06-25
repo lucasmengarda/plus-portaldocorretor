@@ -1,5 +1,5 @@
 {
-  "name": "nextjs",
+  "name": "plus-portalcorretor",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,12 @@
   },
   "dependencies": {
     "next": "10.x",
+    "next-cookies": "^2.0.3",
+    "nextjs": "0.0.3",
+    "numeral": "^2.0.6",
+    "parse": "^3.2.0",
     "react": "17.x",
-    "react-dom": "17.x"
+    "react-dom": "17.x",
+    "react-lottie": "^1.2.3"
   }
 }
