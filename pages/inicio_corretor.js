@@ -24,7 +24,7 @@ class Page extends React.Component {
       ctx.res.end();
     }
 
-    const res = await fetch("https://plus-portaldocorretor.vercel.app/api/tabeladevendas?tabeladevendaspassword=PLUS2021_###");
+    const res = await fetch("https://plus-portaldocorretor.vercel.app/api/tabeladevendas?tabeladevendaspassword=PLUS2021_");
     const json = await res.json()
     console.log("TabelaDeVendasArr.Length: " + json["tabelaDeVendasArr"].length);
 
