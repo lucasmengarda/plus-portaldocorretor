@@ -10,7 +10,7 @@ Parse.javaScriptKey = Statics.JAVASCRIPT_KEY;
 export default async (req, res) => {
 
   console.log(req.query);
-  if (req.query.tabeladevendaspassword == "PLUS2021_###"){
+  if (req.query.tabeladevendaspassword == "PLUS2021_"){
     var Parse = require('parse/node');
     var Statics = require('./statics');
 
