@@ -16,7 +16,7 @@ class Page extends React.Component {
 
     const sessionToken = cookies(ctx).sessionToken;
     console.log("SessionToken: " + sessionToken);
-    
+
     if (sessionToken == null) {
       ctx.res.writeHead(301, {
         Location: './'
@@ -24,6 +24,7 @@ class Page extends React.Component {
       ctx.res.end();
     }
 
+    //const res = await fetch("https://localhost:3000/api/tabeladevendas?tabeladevendaspassword=PLUS2021_");
     const res = await fetch("https://plus-portaldocorretor.vercel.app/api/tabeladevendas?tabeladevendaspassword=PLUS2021_");
     const json = await res.json()
     console.log("TabelaDeVendasArr.Length: " + json["tabelaDeVendasArr"].length);
@@ -45,8 +46,69 @@ class Page extends React.Component {
 
   async componentDidMount() {
     this.state.simulacao_placeholder = "Entrada mínima de " + this.construirCurrency(10000);
-
     const { pathname, query } = this.props.router
+
+    if (query.avaliacaodecredito != null && query.avaliacaodecredito == 2) {
+      var Parse = require('parse');
+      var Statics = require('./api/statics');
+      Parse.initialize(Statics.APPLICATION_ID, "");
+      Parse.serverURL = Statics.SERVER_URL;
+      Parse.javaScriptKey = Statics.JAVASCRIPT_KEY;
+      const usuario = await Parse.User.become(this.props.sessionToken);
+
+      var AvaliacoesDeCredito = Parse.Object.extend("AvaliacoesDeCredito");
+      var query2 = new Parse.Query(AvaliacoesDeCredito);
+      query2.limit(1000);
+      query2.addAscending("createdAt");
+
+      try {
+        var avaliacoesdecreditoArr = await query2.find();
+        var newArr = [];
+
+        function adicionaZero(numero) {
+          if (numero <= 9)
+            return "0" + numero;
+          else
+            return numero;
+        }
+
+        for (var x = 0; x < avaliacoesdecreditoArr.length; x++) {
+          var json = {};
+          json["unidade"] = avaliacoesdecreditoArr[x].get("unidade");
+          json["nomeCliente"] = avaliacoesdecreditoArr[x].get("nomeCliente");
+          json["cpfCliente"] = avaliacoesdecreditoArr[x].get("cpfCliente");
+          json["despachante"] = avaliacoesdecreditoArr[x].get("despachante");
+          json["despachanteNomeContato"] = avaliacoesdecreditoArr[x].get("despachanteNomeContato");
+          json["valorDeAvaliacao"] = this.construirCurrency(avaliacoesdecreditoArr[x].get("valorDeAvaliacao"));
+          json["statusId"] = avaliacoesdecreditoArr[x].get("statusId");
+          json["status"] = "";
+          if (avaliacoesdecreditoArr[x].get("status") != null){
+            json["status"] = avaliacoesdecreditoArr[x].get("status");
+          }
+
+          var criadoemData = avaliacoesdecreditoArr[x].get("createdAt");
+          criadoemData.toLocaleDateString("pt-BR");
+          var criadoem = (adicionaZero(criadoemData.getDate()) + "/" + adicionaZero(((criadoemData.getMonth() + 1))) + "/" + (criadoemData.getFullYear()));
+          criadoem = criadoem + " às " + adicionaZero(criadoemData.getHours()) + ":" + adicionaZero(criadoemData.getMinutes());
+
+          var atualizadoemData = avaliacoesdecreditoArr[x].get("updatedAt");
+          atualizadoemData.toLocaleDateString("pt-BR");
+          var atualizadoem = (adicionaZero(atualizadoemData.getDate()) + "/" + adicionaZero(((atualizadoemData.getMonth() + 1))) + "/" + (atualizadoemData.getFullYear()));
+          atualizadoem = atualizadoem + " às " + adicionaZero(atualizadoemData.getHours()) + ":" + adicionaZero(atualizadoemData.getMinutes());
+
+
+          json["createdAt"] = criadoem;
+          json["updatedAt"] = atualizadoem;
+
+          newArr.push(json);
+        }
+        this.setState({ minhasavaliacoesdecredito: newArr });
+      } catch (e) {
+        console.log(e);
+        Router.reload();
+      }
+    }
+
     if (query.apartamento != null) {
 
       var espelhoParaTabela = this.prepararTabela(this.props.tabelaDeVendasArr);
@@ -109,7 +171,7 @@ class Page extends React.Component {
       setarOEstado["apartamento_areatotal"] = areaTotalStr + "m²";
       setarOEstado["apartamento_planta"] = "/planta_" + aptoEscolhido["planta"] + ".png";
       var valorDeVenda = aptoEscolhido["valorvenda"];
-      if (aptoEscolhido["vendido"]){
+      if (aptoEscolhido["vendido"]) {
         setarOEstado["apartamento_valorvenda"] = "Unid. vendida";
         valorDeVenda = 0.0;
       } else {
@@ -155,7 +217,6 @@ class Page extends React.Component {
       /*
       apartamento_caracteristicas: [],
       */
-
       this.setState(setarOEstado);
     }
 
@@ -182,8 +243,6 @@ class Page extends React.Component {
 
         var chavesCorrigido = (query.chaves / 100) * Math.pow(1.004472, meses);
 
-
-
         this.setState({ simulacao_chaves: this.construirCurrency(chavesCorrigido), simularEntrada: this.construirCurrency((query.entrada / 100)), simularChaves: this.construirCurrency((query.chaves / 100)), simulacao_balao1: this.construirCurrency(balao1Corrigido), simulacao_balao2: this.construirCurrency(balao2Corrigido), simulacao_mesesamort: meses, simulacao_primeiraparcelacombalao: this.construirCurrency(primeiraparccb), simulacao_primeiraparcelasembalao: this.construirCurrency(primeiraparcsb), simulacao_ultimaparcelacombalao: this.construirCurrency(ultimaparccb), simulacao_ultimaparcelasembalao: this.construirCurrency(ultimaparcsb) });
       }
     }
@@ -191,6 +250,10 @@ class Page extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { pathname, query } = this.props.router
+    if (query.avaliacaodecredito != prevProps.router.query.avaliacaodecredito) {
+      //call update
+      this.componentDidMount();
+    }
     if (query.apartamento != prevProps.router.query.apartamento) {
       //call update
       this.componentDidMount();
@@ -243,7 +306,15 @@ class Page extends React.Component {
       apartamento_cef_sinal: "",
       apartamento_cef_saldoincorp: "",
       apartamento_cef_jurosdeobra: "",
-      apartamento_cef_finanmax: ""
+      apartamento_cef_finanmax: "",
+      avcredito_numerounid: "",
+      avcredito_avaliacaocef: "",
+      avcredito_nomecliente: "",
+      avcredito_cpfcliente: "",
+      avcredito_rendacliente: "",
+      avcredito_selectedFile: null,
+      avcredito_botaoenviar: "ENVIAR CLIENTE PARA ANÁLISE",
+      minhasavaliacoesdecredito: null
     };
   }
 
@@ -400,7 +471,7 @@ class Page extends React.Component {
     valorMostravelDeVenda = valorMostravelDeVenda.replace("/", ",");
     valorMostravelDeVenda = valorMostravelDeVenda.replace("$", "R$");
 
-    if (vendido){
+    if (vendido) {
       return (
         <tr className={styles.tabeladevendasvendido} onClick={this.onClick} cellid={apto}>
           <td>
@@ -438,7 +509,7 @@ class Page extends React.Component {
           </td>
         </tr>
       )
-    } else if (reservado){
+    } else if (reservado) {
       return (
         <tr className={styles.tabeladevendasreservado} onClick={this.onClick} cellid={apto}>
           <td>
@@ -517,11 +588,63 @@ class Page extends React.Component {
     }
   }
 
+  renderTabelaMinhasAvaliacoes() {
+    if (this.state.minhasavaliacoesdecredito == null) {
+      return (
+        <br></br>
+      )
+    }
+    return this.state.minhasavaliacoesdecredito.map((avaliacaodecredito, index) => {
+      var unidade = avaliacaodecredito["unidade"];
+        var valorDeAvaliacao = avaliacaodecredito["valorDeAvaliacao"];
+        var nomeCliente = avaliacaodecredito["nomeCliente"];
+        var cpfCliente = avaliacaodecredito["cpfCliente"];
+        var despachante = avaliacaodecredito["despachante"];
+        var despachanteNomeContato = avaliacaodecredito["despachanteNomeContato"];
+        var createdAt = avaliacaodecredito["createdAt"];
+        var updatedAt = avaliacaodecredito["updatedAt"];
+        var status = avaliacaodecredito["status"];
+
+        var statusId = avaliacaodecredito["statusId"];
+        var style = styles.minhasavaliacoespendente;
+        var statusVisivel = "";
+
+        if (statusId == "pendente"){
+          var style = styles.minhasavaliacoespendente;
+          statusVisivel = "PENDENTE";
+        } else if (statusId == "condicionado"){
+          var style = styles.minhasavaliacoescondicionado;
+          statusVisivel = "CONDICIONADO | " + status;
+        } else if (statusId == "aprovado"){
+          var style = styles.minhasavaliacoesaprovado;
+          statusVisivel = "APROVADO DE ACORDO COM A SIMULAÇÃ";
+        } else {
+          var style = styles.minhasavaliacoesreprovado;
+          statusVisivel = "REPROVADO | " + status;
+        }
+
+        return (
+          <tr className={style} cellid={unidade}>
+            <td><span><b>{unidade}</b></span></td>
+            <td><span>{updatedAt}</span></td>
+            <td><span>{valorDeAvaliacao}</span></td>
+            <td><span>{nomeCliente}</span></td>
+            <td><span>{cpfCliente}</span></td>
+            <td><span>{despachante}</span></td>
+            <td><span>{despachanteNomeContato}</span></td>
+            <td><span><b>{statusVisivel}</b></span></td>
+          </tr>
+        )
+    })
+  }
+
   onClickBotoesMenu = event => {
     const id = event.currentTarget.getAttribute("botaoid");
 
     if (id == "espelhodevendas") {
       Router.push('?espelhodevendas=1', undefined, { shallow: true, scroll: true })
+    } else if (id == "avaliacaodecredito") {
+      Router.push('?avaliacaodecredito=1', undefined, { shallow: true, scroll: true })
     } else if (id == "sair") {
       var Parse = require('parse');
       var Statics = require('./api/statics');
@@ -547,10 +670,19 @@ class Page extends React.Component {
 
   onClickEspelhoTabela = event => {
     const id = event.currentTarget.getAttribute("botaoid");
-    if (id == "espelho"){
+    if (id == "espelho") {
       Router.push('?espelhodevendas=1', undefined, { shallow: true, scroll: true })
     } else {
       Router.push('?espelhodevendas=2', undefined, { shallow: true, scroll: true })
+    }
+  };
+
+  onClickSeletorAvaliacoesDeCredito = event => {
+    const id = event.currentTarget.getAttribute("botaoid");
+    if (id == "novaavaliacao") {
+      Router.push('?avaliacaodecredito=1', undefined, { shallow: true, scroll: true })
+    } else {
+      Router.push('?avaliacaodecredito=2', undefined, { shallow: true, scroll: true })
     }
   };
 
@@ -561,8 +693,8 @@ class Page extends React.Component {
       return;
     }
 
-    if ((this.currencyParaValor(this.state.simularEntrada) / 100) < (328289.9 * 0.1)) {
-      alert("O valor mínimo de entrada para esta unidade é de " + this.construirCurrency((328289.9 * 0.1)));
+    if ((this.currencyParaValor(this.state.simularEntrada) / 100) < (this.state.apartamento_valorvenda * 0.1)) {
+      alert("O valor mínimo de entrada para esta unidade é de " + this.construirCurrency((this.state.apartamento_valorvenda * 0.1)));
       return;
     }
 
@@ -574,6 +706,96 @@ class Page extends React.Component {
     const { pathname, query } = this.props.router
     Router.push('?apartamento=' + query.apartamento + '&entrada=' + this.currencyParaValor(this.state.simularEntrada) + "&chaves=" + this.currencyParaValor(this.state.simularChaves), undefined, { shallow: true })
   };
+
+  // On file select (from the pop up) 
+  onFileChange = event => {
+    // Update the state 
+    if (event.target.files[0].size > 10240000) {
+      var numeral = require('numeral');
+      var nnb = numeral(event.target.files[0].size).format('0.0 b');
+      alert("Tamanho máximo permitido: 10MB | Seu arquivo: " + nnb);
+      this.setState({ avcredito_selectedFile: null });
+      event.target.value = null;
+      return;
+    } else {
+      this.setState({ avcredito_selectedFile: event.target.files[0] });
+    }
+  };
+
+  // On file upload (click the upload button) 
+  onFileUpload = event => {
+    // Create an object of formData 
+
+    if (this.state.avcredito_avaliacaocef == "" | this.state.avcredito_avaliacaocef == "Unid. inválida." | this.state.avcredito_avaliacaocef == "Unid. vendida.") {
+      alert("Insira uma unidade p/ avaliação")
+      return;
+    }
+
+    if (this.state.avcredito_nomecliente.length <= 3) {
+      alert("Insira o nome completo do cliente")
+      return;
+    }
+
+    if (this.state.avcredito_cpfcliente.length <= 13) {
+      alert("Insira o CPF do cliente")
+      return;
+    }
+
+    if ((this.currencyParaValor(this.state.avcredito_rendacliente) / 100) < 1500) {
+      alert("Insira a renda do cliente. Ela deve ser superior a R$ 1.500,00.");
+      return;
+    }
+
+    if (this.state.avcredito_selectedFile == null) {
+      alert("Anexe a documentação do cliente")
+      return;
+    }
+
+    // Details of the uploaded file 
+    this.setState({ avcredito_botaoenviar: "ENVIANDO..." })
+
+    this.uploadDaDocumentacao();
+  };
+
+  uploadDaDocumentacao = async () => {
+    var Parse = require('parse');
+    var Statics = require('./api/statics');
+    Parse.initialize(Statics.APPLICATION_ID, "");
+    Parse.serverURL = Statics.SERVER_URL;
+    Parse.javaScriptKey = Statics.JAVASCRIPT_KEY;
+    const usuario = await Parse.User.become(this.props.sessionToken);
+
+    var name = "analisecredito_" + this.state.avcredito_numerounid + ".zip";
+    var documentacaoFile = new Parse.File(name, this.state.avcredito_selectedFile);
+    documentacaoFile.save();
+
+    const AvaliacoesDeCredito = Parse.Object.extend("AvaliacoesDeCredito");
+    const avaliacaoDeCredito = new AvaliacoesDeCredito();
+    avaliacaoDeCredito.set("nomeCliente", this.state.avcredito_nomecliente);
+    avaliacaoDeCredito.set("rendaCliente", (this.currencyParaValor(this.state.avcredito_rendacliente) / 100));
+    avaliacaoDeCredito.set("cpfCliente", this.state.avcredito_cpfcliente);
+    avaliacaoDeCredito.set("unidade", parseInt(this.state.avcredito_numerounid));
+    avaliacaoDeCredito.set("documentacao", documentacaoFile);
+    avaliacaoDeCredito.set("valorDeAvaliacao", (this.currencyParaValor(this.state.avcredito_avaliacaocef) / 100));
+    avaliacaoDeCredito.set("corretor", usuario.get("nome"));
+    avaliacaoDeCredito.set("imobiliaria", usuario.get("razaoSocialImobiliaria"));
+    avaliacaoDeCredito.set("corretorId", usuario.id);
+    avaliacaoDeCredito.set("statusId", "pendente");
+
+    var despachanteJson = await (await fetch("./api/despachantes")).json();
+    var despachante = despachanteJson["despachante"];
+
+    avaliacaoDeCredito.set("despachante", despachante["nome"]);
+    avaliacaoDeCredito.set("codigoDespachante", despachante["codigoDespachante"]);
+    avaliacaoDeCredito.set("despachanteNomeContato", despachante["contato"]);
+
+    avaliacaoDeCredito.setACL(new Parse.ACL(usuario));
+    await avaliacaoDeCredito.save();
+
+    alert("Documentação enviada! Aguarde o resultado, que deve ficar pronto em até 6h.");
+    this.setState({ avcredito_botaoenviar: "ENVIAR CLIENTE PARA ANÁLISE" })
+    Router.reload();
+  }
 
   currencyParaValor(str) {
     if (str.length == 0) {
@@ -625,6 +847,78 @@ class Page extends React.Component {
     this.setState({ simularChaves: this.construirCurrency(value) });
   };
 
+  handle_avcredito_unidadeChange = e => {
+    e.preventDefault();
+    const { value } = e.target;
+    this.setState({ avcredito_numerounid: value });
+
+    var xchar;
+    if (e.charCode != null) {
+      xchar = e.charCode;
+    } else {
+      xchar = e.keyCode;
+    }
+
+    if (xchar != 13) {
+      if (e.target.value.startsWith("1") & e.target.value.length <= 3) {
+        this.setState({ avcredito_avaliacaocef: "Unid. inválida." });
+        return;
+      }
+      if (!e.target.value.startsWith("1") & e.target.value.length <= 2) {
+        this.setState({ avcredito_avaliacaocef: "Unid. inválida." });
+        return;
+      }
+    }
+    var espelhoParaTabela = this.prepararTabela(this.props.tabelaDeVendasArr);
+    var aptoEscolhido = null;
+    var numeroApEscolhido = value;
+
+    for (var y = 0; y < espelhoParaTabela.length; y++) {
+      for (var x = 0; x < espelhoParaTabela[y].length; x++) {
+        var apartamentoShown = espelhoParaTabela[y][x]["apto"];
+        if (apartamentoShown == numeroApEscolhido) {
+          aptoEscolhido = espelhoParaTabela[y][x];
+          continue;
+        }
+      }
+    }
+
+    if (aptoEscolhido == null) {
+      this.setState({ avcredito_avaliacaocef: "Unid. inválida." });
+      return;
+    }
+
+    if (aptoEscolhido["vendido"]) {
+      this.setState({ avcredito_avaliacaocef: "Unid. vendida." });
+      return;
+    }
+
+
+    this.setState({ avcredito_avaliacaocef: this.construirCurrency(aptoEscolhido["financiamentocef"]) });
+  };
+
+  handle_avcredito_nomeClienteChange = e => {
+    const { value } = e.target;
+    this.setState({ avcredito_nomecliente: value });
+  };
+
+  handle_avcredito_cpfChange = e => {
+    const { value } = e.target;
+
+    var cpfFormatado = value.replace(/\D/g, '') // substitui qualquer caracter que nao seja numero por nada
+      .replace(/(\d{3})(\d)/, '$1.$2') // captura 2 grupos de numero o primeiro de 3 e o segundo de 1, apos capturar o primeiro grupo ele adiciona um ponto antes do segundo grupo de numero
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+      .replace(/(-\d{2})\d+?$/, '$1')
+
+    this.setState({ avcredito_cpfcliente: cpfFormatado });
+  };
+
+  handle_avcredito_rendaChange = e => {
+    const { value } = e.target;
+    this.setState({ avcredito_rendacliente: this.construirCurrency(value) });
+  };
+
   render() {
     return <div className={styles.container}>
       <div className={styles.supersizersegundatela} />
@@ -643,13 +937,131 @@ class Page extends React.Component {
         <div className={styles.botoesmenu}>
           <button onClick={this.onClickBotoesMenu} botaoid="materialdevendas">MATERIAL DIGITAL DE VENDAS</button>
           <button onClick={this.onClickBotoesMenu} botaoid="espelhodevendas">ESPELHO DE VENDAS</button>
-          <button onClick={this.onClickBotoesMenu} botaoid="simulacaodecredito">SIMULAÇÃO DE CRÉDITO</button>
+          <button onClick={this.onClickBotoesMenu} botaoid="avaliacaodecredito">AVALIAÇÃO DE CRÉDITO</button>
           <button onClick={this.onClickBotoesMenu} botaoid="minhaspropostas">MINHAS PROPOSTAS</button>
           <button onClick={this.onClickBotoesMenu} botaoid="novaspropostas">NOVA PROPOSTA +</button>
           <button onClick={this.onClickBotoesMenu} botaoid="sair">SAIR</button>
         </div>
 
         <div className={styles.divider}>
+        </div>
+
+        <div style={{ display: this.props.router.query.avaliacaodecredito != null ? "block" : "none" }}>
+          <div className={styles.seletortabelaespelho}>
+            <p>Visualizar:</p>
+            <button onClick={this.onClickSeletorAvaliacoesDeCredito} botaoid="novaavaliacao" style={{ backgroundColor: this.props.router.query.avaliacaodecredito == 1 ? "gray" : "#2f3b60" }}>NOVA AVALIAÇÃO</button>
+            <button onClick={this.onClickSeletorAvaliacoesDeCredito} botaoid="minhasavaliacoes" style={{ backgroundColor: this.props.router.query.avaliacaodecredito == 2 ? "gray" : "#2f3b60" }}>MINHAS AVALIAÇÕES DE CRÉDITO</button>
+          </div>
+
+          <div style={{ display: this.props.router.query.avaliacaodecredito == 2 ? "block" : "none" }}>
+            <div className={styles.textopaginas}>
+              <h1>MINHAS AVALIAÇÕES DE CRÉDITO</h1>
+              <h3>Resultado das suas avaliações de crédito. Clique sobre uma avaliação aprovada/condicionada para formalizar uma proposta</h3>
+              <h3 style={{ display: this.state.minhasavaliacoesdecredito == null ? "block" : "none" }}>CARREGANDO...</h3>
+              <div className={styles.minhasavaliacoes}>
+                <table>
+                  <tr>
+                    <th>UNID.</th>
+                    <th>STATUS ATUALIZADO</th>
+                    <th>VALOR DA AVALIAÇÃO</th>
+                    <th>NOME DO CLIENTE</th>
+                    <th>CPF DO CLIENTE</th>
+                    <th>DESPACHANTE</th>
+                    <th>CONTATO DO DESP.</th>
+                    <th>STATUS</th>
+                  </tr>
+                  {this.renderTabelaMinhasAvaliacoes()}
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: this.props.router.query.avaliacaodecredito == 1 ? "block" : "none" }}>
+            <div className={styles.textopaginas}>
+              <h1>SOLICITAR AVALIAÇÃO DE CRÉDITO</h1>
+              <h3>Preencha com os dados do cliente e anexe os arquivos para iniciar uma simulação de crédito com um dos nossos despachantes:</h3>
+            </div>
+
+            <div className={styles.avaliacaodecredito}>
+              <br></br>
+              <table>
+                <tr>
+                  <td>
+                    <itemfluxo className={styles.itemfluxogroup}>
+                      <span>Número da unidade:</span>
+                      <input maxLength='4' class={styles.formfield} placeholder="Unid. 1901" type="text" name="avcredito_numerounid" value={this.state.avcredito_numerounid}
+                        onChange={this.handle_avcredito_unidadeChange} onKeyPress={this.handle_avcredito_unidadeclicked}></input>
+                    </itemfluxo>
+                  </td>
+                  <td>
+                    <itemfluxo className={styles.itemfluxogroup}>
+                      <span>Valor de avaliação da unid.:</span>
+                      <input class={styles.formfield} disabled placeholder="Insira um número de unidade" type="text" name="entrada" value={this.state.avcredito_avaliacaocef}></input>
+                    </itemfluxo>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <itemfluxo className={styles.itemfluxogroup}>
+                      <span>Nome do cliente:</span>
+                      <input class={styles.formfield} placeholder="Ex.: João da Silva" type="text" name="avcredito_nomecliente" value={this.state.avcredito_nomecliente}
+                        onChange={this.handle_avcredito_nomeClienteChange}></input>
+                    </itemfluxo>
+                  </td>
+                  <td>
+                    <itemfluxo className={styles.itemfluxogroup}>
+                      <span>CPF do cliente:</span>
+                      <input maxLength='14' class={styles.formfield} placeholder="Ex.: 000.000.000-00" type="text" name="avcredito_cpfcliente" value={this.state.avcredito_cpfcliente}
+                        onChange={this.handle_avcredito_cpfChange}></input>
+                    </itemfluxo>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <itemfluxo className={styles.itemfluxogroup}>
+                      <span>Renda familiar total do cliente:</span>
+                      <input class={styles.formfield} placeholder="Ex.: R$ 3.000,00" type="text" name="avcredito_rendacliente" value={this.state.avcredito_rendacliente}
+                        onChange={this.handle_avcredito_rendaChange}></input>
+                    </itemfluxo>
+                  </td>
+                </tr>
+              </table>
+              <div className={styles.textolistadedocumentos}>
+                <br></br>
+                <titulo>Lista de documentos necessários:</titulo>
+                <br></br>
+                <itens>1. RG e CPF (ou CNH) do cliente.</itens>
+                <br></br>
+                <itens>2. RG e CPF (ou CNH) do cônjuge do cliente, se casados ou em união estável.</itens>
+                <br></br>
+                <itens>2.1. Certidão de casamento ou escritura pública de União Estável (Se for o caso).</itens>
+                <br></br>
+                <itens>3. Carteira de trabalho com todas as páginas escaneadas, do cliente e do cônjuge (se for o caso).</itens>
+                <br></br>
+                <itens>4. Comprovante de endereço atualizado.</itens>
+                <br></br>
+                <itens>5.1. Se comprovação de renda for via emprego formal: cópia dos 2 últimos holerites.</itens>
+                <br></br>
+                <itens>5.2. Se comprovação de renda for Imposto de Renda: cópia da última declaração com recibo de entrega.</itens>
+                <br></br>
+                <itens>6. Simulação emitida pelo portal Caixa. <a href="http://www8.caixa.gov.br/siopiinternet-web/simulaOperacaoInternet.do?method=inicializarCasoUso" target="_blank">Clique aqui</a></itens>
+                <br></br>
+                <itens>7. Se o cliente já possuir avaliação válida: Anexar carta de próprio punho solicitando baixa da avaliação anterior, assinada.</itens>
+                <br></br>
+                <br></br>
+                <titulo>Anexar arquivo (.zip) (max.: 10mb):</titulo>
+                <br></br>
+                <br></br>
+                <input type="file" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" onChange={this.onFileChange} />
+                <br></br>
+                <itens>*A falta de documentos gerará reprovação automática do cliente.</itens>
+                <br></br>
+                <br></br>
+                <br></br>
+                <button onClick={this.onFileUpload}>{this.state.avcredito_botaoenviar}</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div style={{ display: this.props.router.query.espelhodevendas != null ? "block" : "none" }}>

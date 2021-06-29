@@ -347,6 +347,11 @@
   color: #000;
 }
 
+.formfield:disabled{
+  background-color: #f2f2f2;
+  color: #555555;
+}
+
 .formfield {
   --input-color: #000;
   --input-border: #476496;
@@ -571,7 +576,9 @@
   width: 100px;
   position: relative;
   margin: 0px auto;
-  height: 35px;
+  height: auto;
+  padding-bottom: 8px;
+  padding-top: 8px;
   background: #2f3b60;
   border-radius: 10px;
   color: #fff;
@@ -632,6 +639,228 @@
   font-size: 11pt;
   text-align: left;
   color: #000;
+}
+
+.avaliacaodecredito{
+  width: 80%;
+  margin: 0px auto;
+  width: 100%;
+}
+
+.avaliacaodecredito table {
+  width: 100%;
+}
+
+.minhasavaliacoes{
+  margin: 25px auto;
+  width: 100%;
+
+}
+
+.minhasavaliacoes table {
+  margin: 0px auto;
+  width: 100%;
+  table-layout: auto;
+  border-spacing:0px 0px; /* Removes the cell spacing via CSS*/;
+}
+
+.minhasavaliacoes tr{
+  padding-left: 10px;
+  transition: 0.3s;
+  color: black;
+}
+
+.minhasavaliacoesaprovado {
+  background-color: #479668;
+}
+
+.minhasavaliacoes td span {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.minhasavaliacoescondicionado {
+  background-color: #7280d1;
+}
+
+.minhasavaliacoesreprovado {
+  background-color: tomato;
+}
+
+.minhasavaliacoespendente {
+  background-color: oldlace;
+}
+
+.minhasavaliacoes tr:not(:first-of-type):hover{
+  background-color: #DBDBDB;
+  color: black;
+}
+
+.minhasavaliacoes td {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 10.5pt;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.minhasavaliacoes td b {
+  font-weight: 600;
+}
+
+.minhasavaliacoes td bu {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.minhasavaliacoes th{
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 10pt;
+  background-color: #4A569D;
+  color: white;
+}
+
+.minhasavaliacoes th:first-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 0px;
+}
+
+.minhasavaliacoes th:last-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 00px;
+}
+
+.minhasavaliacoes th:first-child{
+  border-top-width: 1pt;
+  border-bottom-width: 1pt;
+  border-left-width: 1pt;
+  border-right-width: 1pt;
+  border-color: #273c75;
+  border-style: solid;
+}
+
+.minhasavaliacoes th:last-child{
+  border-top-width: 1pt;
+  border-bottom-width: 1pt;
+  border-left-width: 0pt;
+  border-right-width: 1pt;
+  border-color: #273c75;
+  border-style: solid;
+}
+
+.minhasavaliacoes th{
+  border-top-width: 1pt;
+  border-bottom-width: 1pt;
+  border-left-width: 0pt;
+  border-right-width: 1pt;
+  border-color: #273c75;
+  border-style: solid;
+  line-height: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  
+}
+
+.minhasavaliacoes td:first-child{
+  border-top-width: 0pt;
+  border-bottom-width: 0pt;
+  border-left-width: 0pt;
+  border-right-width: 1pt;
+  border-color: #192a56;
+  border-style: solid;
+}
+
+.minhasavaliacoes td:last-child{
+  border-top-width: 0pt;
+  border-bottom-width: 0pt;
+  border-left-width: 0pt;
+  border-right-width: 0pt;
+  border-color: #192a56;
+  border-style: solid;
+}
+
+.minhasavaliacoes td{
+  border-top-width: 0pt;
+  border-bottom-width: 0pt;
+  border-left-width: 0pt;
+  border-right-width: 1pt;
+  border-color: #192a56;
+  border-style: solid;
+  line-height: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  
+}
+
+.minhasavaliacoes td:nth-child(01),.minhasavaliacoes th:nth-child(01){
+  width: 60px;
+}
+
+.minhasavaliacoes td:nth-child(02),.minhasavaliacoes th:nth-child(02){
+  width: 120px;
+}
+
+.minhasavaliacoes td:nth-child(3),.minhasavaliacoes th:nth-child(3){
+  width: 120px;
+}
+
+.minhasavaliacoes td:nth-child(4),.minhasavaliacoes th:nth-child(4){
+  width: 120px;
+}
+
+.minhasavaliacoes td:nth-child(5),.minhasavaliacoes th:nth-child(5){
+  width: 200px;
+}
+
+.minhasavaliacoes td:nth-child(6),.minhasavaliacoes th:nth-child(6){
+  width: 120px;
+}
+
+.minhasavaliacoes td:nth-child(7),.minhasavaliacoes th:nth-child(7){
+  width: 150;
+}
+
+.minhasavaliacoes td:nth-child(8),.minhasavaliacoes th:nth-child(8){
+  width: 200px;
+  min-width: 100px;
+}
+
+.textolistadedocumentos button:hover{
+  opacity: 0.6;
+  background-color: #204F69;
+  color: white;
+}
+
+.textolistadedocumentos button{
+  font-family: 'Staatliches', sans-serif;
+  font-size: 19px;
+  width: auto;
+  padding-right: 30px;
+  padding-left: 30px;
+  margin: 10px auto;
+  display: block;
+  height: 44px;
+  background: #237A57;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.textolistadedocumentos titulo{
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+}
+
+.textolistadedocumentos itens{
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 508;
+  font-size: 14px;
+  text-align: center;
 }
 
 .plantaandar {
